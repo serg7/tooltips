@@ -10,7 +10,7 @@
     transform: translateX(-50%);
     min-width: 12em;
     border-radius: 2px;
-    background-color: #313131;
+    background-color: #d1ddb6;
     box-shadow: 0 3px 16px rgba(black, 0.15);
     &:after {
       content: '';
@@ -18,7 +18,7 @@
       width: 0;
       height: 0;
       border: .4em solid transparent;
-      border-top-color: #313131;
+      border-top-color: #d1ddb6;
       left: 50%;
       z-index: -1;
       transform: translateX(-50%);

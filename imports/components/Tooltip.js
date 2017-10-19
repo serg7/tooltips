@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Tooltip extends React.Component {
-    constructor () {
+export default class Tooltip extends React.Component
+{
+    constructor ()
+    {
         super();
         this.state = {
             isVisible: false,
@@ -10,11 +12,13 @@ export default class Tooltip extends React.Component {
         this.timer;
     }
 
-    componentWillUnmount () {
+    componentWillUnmount ()
+    {
         clearTimeout(this.timer);
     }
 
-    handleMouseEnter () {
+    handleMouseEnter ()
+    {
         this.timer = setTimeout(() => {
             this.setState({
                 isVisible: true
@@ -22,14 +26,16 @@ export default class Tooltip extends React.Component {
         }, this.props.delayTime);
     }
 
-    handleMouseLeave () {
+    handleMouseLeave ()
+    {
         clearTimeout(this.timer);
         this.setState({
             isVisible: false
         });
     }
 
-    render () {
+    render ()
+    {
         const isVisible = this.state.isVisible ? ' is-visible' : ' is-hidden';
         const className = `tooltip ${isVisible}`;
 

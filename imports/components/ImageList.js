@@ -149,8 +149,8 @@ export default class ImageList extends React.Component
                                 {imagePreview}
                             </div>
                             <button className="button">Update</button>
+                            <button className="button button__secondary" type="button" onClick={() => this.setState({ modalEditIsOpen: false })}>Cancel</button>
                         </form>
-                        <button className="button button__secondary" type="button" onClick={() => this.setState({ modalEditIsOpen: false })}>Cancel</button>
                     </Modal>
 
                     {this.renderImages()}
