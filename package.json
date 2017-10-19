@@ -1,0 +1,21 @@
+{
+  "name": "tooltips",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "meteor-node-stubs": "~0.2.4",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-meteor-data": "^0.2.10",
+    "react-mixin": "^4.0.0",
+    "react-modal": "^3.0.3",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-tooltip": "^3.4.0",
+    "shortid": "^2.2.8",
+    "simpl-schema": "^0.3.2"
+  }
+}

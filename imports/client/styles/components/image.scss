@@ -1,0 +1,16 @@
+.image__container
+{
+  display: inline-block;
+  margin: 20px;
+  border: 1px solid #ddd;
+  padding: 20px;
+}
+
+.image__container img
+{
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  cursor: pointer;
+  border: 1px solid $light-grey;
+}

@@ -1,0 +1,48 @@
+.boxed-view {
+  align-items: center;
+  background:   $boxed-view-overlay-bg;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.boxed-view__box {
+  background-color: $boxed-view-bg;
+  padding: 2.4rem;
+  text-align: center;
+  width: 24rem;
+}
+
+.boxed-view__box img {
+  width: 100px;
+}
+
+.boxed-view__preview {
+  width: 70rem;
+}
+
+.boxed-view__preview img {
+  margin: 5rem;
+  width: 40rem;
+}
+
+.boxed-view__content {
+  margin: 5rem;
+  border: 1px solid $light-grey;
+  padding: 5rem;
+}
+
+.boxed-view__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.boxed-view__modal {
+  background: fade_out($boxed-view-overlay-bg, .3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
