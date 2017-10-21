@@ -3,6 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Tracker } from 'meteor/tracker';
 import { Meteor } from 'meteor/meteor';
 import Modal from 'react-modal';
+import { Redirect } from 'react-router-dom';
 
 import Image from './Image';
 import { Images, files } from '../api/images';
@@ -25,7 +26,8 @@ export default class ImageList extends React.Component
             previewItem: {
                 title: '',
                 tooltip: ''
-            }
+            },
+            redirectToLoginPage: false
         }
     }
 
@@ -89,15 +91,19 @@ export default class ImageList extends React.Component
     render()
     {
         console.log('render method');
-
-        let imagePreview = this.state.imagePreviewUrl ? <img src={this.state.imagePreviewUrl} /> : <div>Please select an Image for Preview</div>;
+        const imagePreview = this.state.imagePreviewUrl ? <img src={this.state.imagePreviewUrl} /> : <div>Please select an Image for Preview</div>;
+        const { redirectToLoginPage } = this.state;
+        console.log('redirectToLoginPage: ' + redirectToLoginPage);
 
         return (
             <div>
                 <div className="header">
                     <div className="header__content">
                         <h1 className="header_title">Admin panel</h1>
-                        <button className="button button__link-text" onClick={() => Accounts.logout() }>Logout</button>
+                        <button className="button button__link-text" onClick={() => {
+                            Accounts.logout();
+                            this.setState({ redirectToLoginPage: true });
+                        }}>Logout</button>
                     </div>
                 </div>
 
@@ -155,6 +161,8 @@ export default class ImageList extends React.Component
 
                     {this.renderImages()}
                 </div>
+
+                {redirectToLoginPage && <Redirect to="/" />}
             </div>
         )
     }

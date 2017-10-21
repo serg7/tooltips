@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
+import { Redirect } from 'react-router-dom';
 
 export default class Login extends React.Component
 {
@@ -9,7 +10,8 @@ export default class Login extends React.Component
         super(props);
 
         this.state = {
-            error: ''
+            error: '',
+            redirectToImagesPage: false
         };
     }
 
@@ -21,16 +23,20 @@ export default class Login extends React.Component
         let password = this.refs.password.value.trim();
 
        Meteor.loginWithPassword({ email }, password, (error) => {
-           console.log('Login callback', error);
+           !error ? this.setState({ redirectToImagesPage: true }) : null;
        });
     }
 
     render()
     {
+        const { redirectToImagesPage } = this.state;
+        console.log('render Login');
+
         return (
             <div className="boxed-view">
+                {redirectToImagesPage && <Redirect to="/images" />}
                 <div className="boxed-view__box">
-                    <h1>Login Page</h1>
+                    <h1>Login</h1>
 
                     {this.state.error ? <p>{this.state.error}</p> : undefined }
 
@@ -43,7 +49,6 @@ export default class Login extends React.Component
                     <Link to="/signup">Signup</Link>
                 </div>
             </div>
-
         );
     }
 
