@@ -23,7 +23,7 @@ export default class Login extends React.Component
         let password = this.refs.password.value.trim();
 
        Meteor.loginWithPassword({ email }, password, (error) => {
-           !error ? this.setState({ redirectToImagesPage: true }) : null;
+           !error ? this.setState({ redirectToImagesPage: true }) : this.setState({ error: error.reason });
        });
     }
 
@@ -37,15 +37,12 @@ export default class Login extends React.Component
                 {redirectToImagesPage && <Redirect to="/images" />}
                 <div className="boxed-view__box">
                     <h1>Login</h1>
-
-                    {this.state.error ? <p>{this.state.error}</p> : undefined }
-
+                    <h3>{this.state.error ? <p>{this.state.error}</p> : undefined }</h3>
                     <form onSubmit={this.onSubmit.bind(this)}>
                         <input ref="email" type="email" name="email" placeholder="Email" />
                         <input ref="password" type="password" name="password" placeholder="Password"  />
                         <button className="button">Login</button>
                     </form>
-
                     <Link to="/signup">Signup</Link>
                 </div>
             </div>

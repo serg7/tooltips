@@ -25,7 +25,8 @@ export default class ImageList extends React.Component
             modalEditIsOpen: false,
             previewItem: {
                 title: '',
-                tooltip: ''
+                tooltip: '',
+                fileId: ''
             },
             redirectToLoginPage: false
         }
@@ -50,7 +51,7 @@ export default class ImageList extends React.Component
         return this.state.images.map((image) => {
             return (
                 <Image
-                    openPreview={(title, tooltip) => this.setState({ modalPreviewIsOpen: true, previewItem: { title, tooltip } })}
+                    openPreview={(title, tooltip, fileId) => this.setState({ modalPreviewIsOpen: true, previewItem: { title, tooltip, fileId } })}
                     closePreview={() => this.setState({ modalPreviewIsOpen: false })}
                     openEdit={(id, title, tooltip) => this.setState({ modalEditIsOpen: true, id, title, tooltip })}
                     closeEdit={() => this.setState({ modalEditIsOpen: false })}
@@ -71,8 +72,15 @@ export default class ImageList extends React.Component
         const { id, title, tooltip, file } = this.state;
         let fileObj = files.insert(file);
 
+        let cursor = files.findOne(fileObj._id);
+        cursor.on('uploaded', Meteor.bindEnvironment(() => {
+            console.log('uploaded ....');
+            //console.log('Images: ', this.state.images);
+            this.setState({ modalEditIsOpen: false });
+        }));
+
         Meteor.call('images.update', id, title, tooltip, fileObj, (error, response) => {
-            !!error ? this.setState({ error: error.reason }) : this.setState({ modalEditIsOpen: false, title: '', error: '', tooltip: '' });
+            !!error ? this.setState({ error: error.reason }) : this.setState({ title: '', error: '', tooltip: '' });
         });
     }
 
@@ -93,7 +101,7 @@ export default class ImageList extends React.Component
         console.log('render method');
         const imagePreview = this.state.imagePreviewUrl ? <img src={this.state.imagePreviewUrl} /> : <div>Please select an Image for Preview</div>;
         const { redirectToLoginPage } = this.state;
-        console.log('redirectToLoginPage: ' + redirectToLoginPage);
+        //console.log('redirectToLoginPage: ' + redirectToLoginPage);
 
         return (
             <div>
@@ -118,7 +126,7 @@ export default class ImageList extends React.Component
                     >
                         <div className="boxed-view__content">
                             <Tooltip text={this.state.previewItem.tooltip}>
-                                <img src='/img/chamomile.jpg' title={this.state.previewItem.title} />
+                                <img src={'/cfs/files/files/' + this.state.previewItem.fileId} title={this.state.previewItem.title} />
                             </Tooltip>
                         </div>
                         <button className="button button__secondary" type="button" onClick={() => this.setState({ modalPreviewIsOpen: false })}>Cancel</button>
@@ -149,7 +157,7 @@ export default class ImageList extends React.Component
                                 placeholder="Tooltip text" />
 
                             <input className="fileInput"
-                                   type="file"
+                                   type="file" required
                                    onChange={(e)=>this.handleImageChange(e)} />
                             <div className="imgPreview">
                                 {imagePreview}

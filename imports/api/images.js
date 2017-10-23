@@ -3,32 +3,11 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import shortId from 'shortid';
 
-FS.debug = true;
+//FS.debug = true;
 
 export const Images = new Mongo.Collection('images');
-
-export const filesStore = new FS.Store.FileSystem('files', {
-    path: '/uploads'
-});
-
-export const files = new FS.Collection('files', {
-    stores: [filesStore]
-});
-
-// this.files.allow({
-//     insert: function () {
-//         return true;
-//     },
-//     update: function () {
-//         return true;
-//     },
-//     remove: function () {
-//         return true;
-//     },
-//     download: function () {
-//         return true;
-//     }
-// });
+export const filesStore = new FS.Store.FileSystem('files', { path: '/uploads' });
+export const files = new FS.Collection('files', { stores: [filesStore] });
 
 if (Meteor.isServer)
 {
