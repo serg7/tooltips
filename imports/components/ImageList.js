@@ -35,8 +35,9 @@ export default class ImageList extends React.Component
     componentDidMount()
     {
         this.imagesTracker = Tracker.autorun(() => {
+            console.log('TRACKER');
             Meteor.subscribe('images');
-            const images = Images.find({ }).fetch();
+            const images = Images.find({}).fetch();
             this.setState({ images });
         });
     }
@@ -74,14 +75,10 @@ export default class ImageList extends React.Component
 
         let cursor = files.findOne(fileObj._id);
         cursor.on('uploaded', Meteor.bindEnvironment(() => {
-            console.log('uploaded ....');
-            //console.log('Images: ', this.state.images);
-            this.setState({ modalEditIsOpen: false });
+            Meteor.call('images.update', id, title, tooltip, fileObj, (error, response) => {
+                !!error ? this.setState({ error: error.reason }): this.setState({  modalEditIsOpen: false, title: '', error: '', tooltip: '', imagePreviewUrl: '' });;
+            });
         }));
-
-        Meteor.call('images.update', id, title, tooltip, fileObj, (error, response) => {
-            !!error ? this.setState({ error: error.reason }) : this.setState({ title: '', error: '', tooltip: '' });
-        });
     }
 
     handleImageChange(event) {
@@ -101,7 +98,6 @@ export default class ImageList extends React.Component
         console.log('render method');
         const imagePreview = this.state.imagePreviewUrl ? <img src={this.state.imagePreviewUrl} /> : <div>Please select an Image for Preview</div>;
         const { redirectToLoginPage } = this.state;
-        //console.log('redirectToLoginPage: ' + redirectToLoginPage);
 
         return (
             <div>
@@ -129,7 +125,7 @@ export default class ImageList extends React.Component
                                 <img src={'/cfs/files/files/' + this.state.previewItem.fileId} title={this.state.previewItem.title} />
                             </Tooltip>
                         </div>
-                        <button className="button button__secondary" type="button" onClick={() => this.setState({ modalPreviewIsOpen: false })}>Cancel</button>
+                        <button className="button button__secondary" type="button" onClick={() => this.setState({ modalPreviewIsOpen: false })}>Close</button>
                     </Modal>
 
                     <Modal

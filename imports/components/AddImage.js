@@ -25,30 +25,14 @@ export default class AddImage extends React.Component
         event.preventDefault();
 
         const { title, tooltip, file } = this.state;
-
-
-        let fileObj = files.insert(file, function (error, fileObj) {
-            console.log(' insert  .......');
-        });
-
-        Meteor.call('images.insert', title, tooltip, fileObj, (error, response) => {
-            console.log(' images.insert  .......');
-            !error ? this.setState({ isOpen: false, title: '', error: '', tooltip: '' }) : this.setState({ error: error.reason });
-        });
-
+        let fileObj = files.insert(file);
         let cursor = files.findOne(fileObj._id);
-        cursor.on('uploaded', () => {
-            console.log('uploaded ....');
 
-
-        });
-
-
-
-        // filesStore.on('uploaded', function (fileObj) {
-        //     debugger;
-        //     console.log('uploaded ..');
-        // });
+        cursor.on('uploaded', Meteor.bindEnvironment(() => {
+            Meteor.call('images.insert', title, tooltip, fileObj, (error, response) => {
+                !error ? this.setState({ isOpen: false, title: '', error: '', tooltip: '', imagePreviewUrl: '' }) : this.setState({ error: error.reason });
+            });
+        }));
     }
 
     handleImageChange(event) {

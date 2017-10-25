@@ -7,7 +7,14 @@ import shortId from 'shortid';
 
 export const Images = new Mongo.Collection('images');
 export const filesStore = new FS.Store.FileSystem('files', { path: '/uploads' });
-export const files = new FS.Collection('files', { stores: [filesStore] });
+export const files = new FS.Collection('files', {
+    stores: [filesStore],
+        filter: {
+            allow: {
+                contentTypes: ['image/*']
+            }
+        }
+    });
 
 if (Meteor.isServer)
 {
