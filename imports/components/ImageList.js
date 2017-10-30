@@ -61,6 +61,7 @@ export default class ImageList extends React.Component
                     fileId={image.file._id}
                     key={image._id}
                     title={image.title}
+                    //url={image.file.url}
                 />
             )
         });
@@ -73,12 +74,14 @@ export default class ImageList extends React.Component
         const { id, title, tooltip, file } = this.state;
         let fileObj = files.insert(file);
 
-        let cursor = files.findOne(fileObj._id);
-        cursor.on('uploaded', Meteor.bindEnvironment(() => {
-            Meteor.call('images.update', id, title, tooltip, fileObj, (error, response) => {
-                !!error ? this.setState({ error: error.reason }): this.setState({  modalEditIsOpen: false, title: '', error: '', tooltip: '', imagePreviewUrl: '' });;
-            });
-        }));
+        //let cursor = files.findOne(fileObj._id);
+        // fileObj.on('stored', Meteor.bindEnvironment(() => {
+        //     console.log('STORED------');
+        // }));
+
+        Meteor.call('images.update', id, title, tooltip, fileObj, (error, response) => {
+            !!error ? this.setState({ error: error.reason }): this.setState({  modalEditIsOpen: false, title: '', error: '', tooltip: '', imagePreviewUrl: '' });;
+        });
     }
 
     handleImageChange(event) {

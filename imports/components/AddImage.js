@@ -26,13 +26,14 @@ export default class AddImage extends React.Component
 
         const { title, tooltip, file } = this.state;
         let fileObj = files.insert(file);
-        let cursor = files.findOne(fileObj._id);
+        //let cursor = files.findOne(fileObj._id);
 
-        cursor.on('uploaded', Meteor.bindEnvironment(() => {
-            Meteor.call('images.insert', title, tooltip, fileObj, (error, response) => {
-                !error ? this.setState({ isOpen: false, title: '', error: '', tooltip: '', imagePreviewUrl: '' }) : this.setState({ error: error.reason });
-            });
-        }));
+        // fileObj.on('uploaded', Meteor.bindEnvironment(() => {
+        // }));
+
+        Meteor.call('images.insert', title, tooltip, fileObj, (error, response) => {
+            !error ? this.setState({ isOpen: false, title: '', error: '', tooltip: '', imagePreviewUrl: '' }) : this.setState({ error: error.reason });
+        });
     }
 
     handleImageChange(event) {

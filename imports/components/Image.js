@@ -10,21 +10,42 @@ export default class Image extends React.Component
         super(props);
 
         this.state = {
+            loaded: false,
             src: ''
-        }
+        };
     }
 
     onImageLoadError(event)
     {
+        //console.log('URL: ' + this.props.url);
+        // TODO: prevent unlimited requests
         event.target.src = '/cfs/files/files/' + this.props.fileId;
+    }
+
+    componentDidMount()
+    {
+        const img = this.refs.img;
+        if (img.complete)
+        {
+            this.handleImageLoaded();
+        }
+    }
+
+    handleImageLoaded()
+    {
+        if (!this.state.loaded) {
+            console.log('image loaded');
+            this.setState({ loaded: true });
+        }
     }
 
     render()
     {
         return (
             <div className="image__container">
-                <img src={'/cfs/files/files/' + this.props.fileId}
+                <img ref="img" src={'/cfs/files/files/' + this.props.fileId}
                      onClick={() => this.props.openPreview(this.props.title, this.props.tooltip, this.props.fileId)}
+                     onLoad={this.handleImageLoaded.bind(this)}
                      onError={this.onImageLoadError.bind(this)}
                 />
                 <div className="button_section">
