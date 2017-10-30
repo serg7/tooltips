@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
+import { Redirect } from 'react-router-dom';
 
 export default class Signup extends React.Component
 {
@@ -9,7 +10,8 @@ export default class Signup extends React.Component
         super(props);
 
         this.state = {
-            error: ''
+            error: '',
+            redirectToImagesPage: false
         }
     }
 
@@ -21,14 +23,17 @@ export default class Signup extends React.Component
         let password = this.refs.password.value.trim();
 
         Accounts.createUser({ email, password }, (error) => {
-            console.log("Signup callback", error);
+            !error ? this.setState({ redirectToImagesPage: true }) : this.setState({ error: error.reason });
         });
     }
 
     render()
     {
+        const { redirectToImagesPage } = this.state;
+
         return (
             <div className="boxed-view">
+                {redirectToImagesPage && <Redirect to="/images" />}
                 <div className="boxed-view__box">
                     <h1>Signup</h1>
 

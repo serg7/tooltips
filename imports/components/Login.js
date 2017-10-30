@@ -30,7 +30,6 @@ export default class Login extends React.Component
     render()
     {
         const { redirectToImagesPage } = this.state;
-        console.log('render Login');
 
         return (
             <div className="boxed-view">
